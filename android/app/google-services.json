@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "418104475424",
+    "project_id": "in-news-a116c",
+    "storage_bucket": "in-news-a116c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418104475424:android:fa58589308d4ab10392145",
+        "android_client_info": {
+          "package_name": "com.ddevm.in_news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418104475424-btnvj707rsv5judso5vi7hhthvdt5eh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx9b7y5GWAtw6A2OzAlSLJxuJvNvgWTyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418104475424-btnvj707rsv5judso5vi7hhthvdt5eh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
