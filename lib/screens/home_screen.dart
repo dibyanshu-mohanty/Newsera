@@ -33,12 +33,14 @@ class _NewsAppState extends State<NewsApp> {
           style: kAppBarStyle,
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.bubble_chart,
-              color: Colors.black,
-            ),
+          IconButton(
+            onPressed: (){
+              setState(() {
+                reqFunction=Headlines();
+              });
+            },
+            icon: Icon(Icons.bubble_chart),
+            color: Colors.black,
           ),
         ],
       ),
@@ -153,7 +155,9 @@ class _NewsAppState extends State<NewsApp> {
           ),
         ),
       ),
-      body: reqFunction,
+      body:SafeArea(
+        child: reqFunction,
+      )
     );
   }
 }

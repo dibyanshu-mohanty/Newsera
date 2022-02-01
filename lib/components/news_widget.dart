@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:in_news/messaging/messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-class NewsPage extends StatefulWidget {
+
+class NewsPage extends StatelessWidget {
   final String headline;
   final String image;
   final String body;
@@ -21,100 +19,36 @@ class NewsPage extends StatefulWidget {
     required this.url,
   });
 
-  @override
-  _NewsPageState createState() => _NewsPageState();
-}
-
-class _NewsPageState extends State<NewsPage> {
-  _launchURL() async {
-    String url = widget.url;
-    if (await canLaunch(url)) {
+  _launchURL(BuildContext context) async {
+    try{
       await launch(url);
-    } else {
-      throw 'Could not launch $url';
     }
-  }
-
-  void showNotification(){
-    flutterLocalNotificationsPlugin.show(
-        0,
-        widget.headline,
-        "Tap to View",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channel.description,
-                importance: Importance.low,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')
-        ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channel.description,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher',
-              ),
-            ));
-      }
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text((notification.title).toString()),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text((notification.body).toString())],
-                  ),
-                ),
-              );
-            });
-      }
-    });
+    catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please check you internet connection !")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.9,
       color: Color(0xFFEEEEEE),
-      child: SingleChildScrollView(
-        child: Column(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              widget.image,
+            Container(
+              height: MediaQuery.of(context).size.height * 0.3,
               width: double.infinity,
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+              ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            Container(
+              padding: EdgeInsets.only(left: 8.0, right: 8.0,bottom: 5.0),
               child: Text(
-                widget.headline,
+                headline,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -125,9 +59,9 @@ class _NewsPageState extends State<NewsPage> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
               child: Text(
-                widget.time,
+                time,
                 style: TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w700,
@@ -137,9 +71,9 @@ class _NewsPageState extends State<NewsPage> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
               child: Text(
-                widget.body,
+                body,
                 style: TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w600,
@@ -148,79 +82,74 @@ class _NewsPageState extends State<NewsPage> {
                     letterSpacing: 0.5),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 10.0),
-                  child: Text(
-                    "Source:",
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Source: " + author,
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,
                     ),
                   ),
-                ),
-                Text(
-                  widget.author,
-                ),
-                SizedBox(
-                  width: 30.0,
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: FaIcon(
-                      FontAwesomeIcons.heart,
-                    )),
-                IconButton(
-                    onPressed: () {},
-                    icon: FaIcon(
-                      FontAwesomeIcons.bookmark,
-                    )),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15.0),
-                    topRight: Radius.circular(15.0)),
-                color: Color(0xFFDDDDDD),
-              ),
-              width: double.infinity,
-              child: GestureDetector(
-                onTap: () {
-                  _launchURL();
-                },
-                child: Column(
-                  children: [
-                    Text(
-                      widget.headline,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.black87,
-                          fontFamily: "Nunito"),
+                  InkWell(
+                    onTap: (){
+                      _launchURL(context);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.ideographic,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.externalLinkAlt,
+                          size: 18,
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          "Read More",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.0,
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: 8.0,
-                    ),
-                    Text(
-                      "Tap Here to Read More!",
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.only(
+            //         topLeft: Radius.circular(15.0),
+            //         topRight: Radius.circular(15.0)),
+            //     color: Color(0xFFDDDDDD),
+            //   ),
+            //   width: MediaQuery.of(context).size.width,
+            //   // height: (MediaQuery.of(context).size.height)*0.3,
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       _launchURL();
+            //     },
+            //     child: Center(
+            //       child: Text(
+            //             "Tap Here to Read More!",
+            //             style: TextStyle(
+            //                 color: Colors.black87,
+            //                 fontFamily: "Montserrat",
+            //                 fontWeight: FontWeight.w500),
+            //           ),
+            //     ),
+            //   ),
+            // ),
+          ]),
     );
   }
 }

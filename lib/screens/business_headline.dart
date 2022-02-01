@@ -54,7 +54,7 @@ class _BusinessHeadlinesState extends State<BusinessHeadlines> {
         newsData[i]['urlToImage'] != null
             ? image.add(newsData[i]['urlToImage'])
             : image.add(
-                "https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293__340.jpg");
+                "https://9auileboys-flywheel.netdna-ssl.com/wp-content/uploads/2019/03/news.jpg");
         newsData[i]['description'] != null
             ? body.add(newsData[i]['description'])
             : body.add("No Content Found");
@@ -109,6 +109,7 @@ class _BusinessHeadlinesState extends State<BusinessHeadlines> {
               initialPage: 0,
               enableLoop: false,
               itemCount: headline.length,
+            waveType: WaveType.circularReveal,
               itemBuilder: (context, index) => NewsPage(
                 headline: headline[index],
                 image: image[index],
