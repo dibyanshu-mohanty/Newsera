@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-final String _apiKey = "42bc402b1adc4c73a70d0baae08eb36e";
+final String _apiKey = "";
 class TopData {
     Future<dynamic> getTopData () async{
-      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&apiKey=$_apiKey"));
+      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&apiKey="));
       if (response.statusCode ==200){
         String data = response.body;
         return(jsonDecode(data));
@@ -14,7 +14,7 @@ class TopData {
     }
 
     Future<dynamic> getBusData () async{
-      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=$_apiKey"));
+      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey="));
       if (response.statusCode ==200){
         String data = response.body;
         return(jsonDecode(data));
@@ -24,7 +24,7 @@ class TopData {
     }
 
     Future<dynamic> getSportData () async{
-      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&category=sports&apiKey=$_apiKey"));
+      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=in&category=sports&apiKey="));
       if (response.statusCode ==200){
         String data = response.body;
         return(jsonDecode(data));
@@ -34,7 +34,7 @@ class TopData {
     }
 
     Future<dynamic> getTechData () async{
-      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=$_apiKey"));
+      http.Response response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey="));
       if (response.statusCode ==200){
         String data = response.body;
         return(jsonDecode(data));
