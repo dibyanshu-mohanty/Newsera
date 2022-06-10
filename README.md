@@ -11,7 +11,8 @@ News app built for India, with 💚 for India.
 This app is completely free to use and is free from unnecessary traffic and third-party ads. We donot endorse any kind of usage of third part softwares.
 
 ## Data
-All the information used in the app is fetched from [News API](https://newsapi.org)'s server. Thus for any runtime issues the creator is not solely responsible.
+This app uses an unofficial Inshorts API which scrapes data from Inshorts. So all the credit goes to the ### Creator and ### Inshorts
 
-![IN_News](https://user-images.githubusercontent.com/72657275/126213010-4aedb05f-68c6-40f5-b0c6-bebedcf3552c.png)
+![Newsera](https://user-images.githubusercontent.com/72657275/173112185-91591f4f-e3a2-49e5-b922-bfa8bffdaf6b.png)
+
 
