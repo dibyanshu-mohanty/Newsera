@@ -6,65 +6,29 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Headlines extends StatefulWidget {
+  final String category;
+  Headlines({required this.category});
   @override
   _HeadlinesState createState() => _HeadlinesState();
 }
 
 class _HeadlinesState extends State<Headlines> {
-  List<String> headline = [];
-  List<String> image = [];
-  List<String> body = [];
-  List<String> author = [];
-  List<String> time = [];
-  List<String> url = [];
+
   bool _isLoading = true;
+  var result;
+  List finalData =[];
 
   void getData() async {
     try {
-      final data = await TopData().getTopData();
-      updateUI(data['articles']);
+      final data = await TopData().getData(widget.category);
+      setState((){
+        result = data;
+        finalData = result["data"];
+        _isLoading =false;
+      });
+      print(finalData[0]["content"]);
     } catch (e) {
       print(e);
-    }
-  }
-
-  void updateUI(dynamic newsData) {
-    for (int i = 0; i < newsData.length; i++) {
-      setState(() {
-        if (newsData == null) {
-          Alert(
-            context: context,
-            type: AlertType.error,
-            title: "OOPS !",
-            desc: "Something went Wrong",
-            buttons: [
-              DialogButton(
-                child: Text(
-                  "Return Back",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                onPressed: () => Navigator.pop(context),
-                width: 120,
-              ),
-            ],
-          );
-        }
-
-        headline.add(newsData[i]['title']);
-        newsData[i]['urlToImage'] != null
-            ? image.add(newsData[i]['urlToImage'])
-            : image.add(
-                "https://9auileboys-flywheel.netdna-ssl.com/wp-content/uploads/2019/03/news.jpg");
-        newsData[i]['description'] != null
-            ? body.add(newsData[i]['description'])
-            : body.add("No Content Found");
-        author.add(newsData[i]['source']['name']);
-        time.add(newsData[i]['publishedAt']);
-        newsData[i]['url'] != null
-            ? url.add(newsData[i]['url'])
-            : url.add("https://www.google.com");
-        _isLoading = false;
-      });
     }
   }
 
@@ -85,39 +49,43 @@ class _HeadlinesState extends State<Headlines> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SpinKitRotatingCircle(
-                  size: 20.0,
-                  color: Colors.black,
-                ),
-                Text(
-                  "Loading News",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Montserrat",
-                    fontSize: 18.0,
+        ? Scaffold(
+        backgroundColor: Colors.white,
+          body: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SpinKitRotatingCircle(
+                    size: 20.0,
+                    color: Colors.black,
                   ),
-                ),
-              ],
+                  Text(
+                    "Loading News",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Montserrat",
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
+        )
         : RefreshIndicator(
           onRefresh: _refresh,
           child: LiquidSwipe.builder(
               initialPage: 0,
               enableLoop: false,
               waveType: WaveType.circularReveal,
-              itemCount: headline.length,
+              itemCount: result["data"].length,
               itemBuilder: (context, index) => NewsPage(
-                headline: headline[index],
-                image: image[index],
-                body: body[index],
-                author: author[index],
-                time: time[index],
-                url: url[index],
+                date: result["data"][index]["date"],
+                headline: result["data"][index]["title"],
+                image: result["data"][index]["imageUrl"],
+                body: result["data"][index]["content"],
+                author: result["data"][index]["author"],
+                time: result["data"][index]["time"],
+                url: result["data"][index]["readMoreUrl"],
               ),
             ),
         );

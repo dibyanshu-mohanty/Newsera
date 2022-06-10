@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset("assets/news_logo.png",),
+          Image.asset("assets/Newsera.png",),
           Container(
             width:100,
             child: LinearProgressIndicator(
@@ -43,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
               backgroundColor: Colors.white,
             ),
           ),
+          Text("Built with ❤ for India",style: TextStyle(color: Color(0xFF474a6e),fontSize: 16.0,fontWeight: FontWeight.w500),)
         ],
       ),
     );

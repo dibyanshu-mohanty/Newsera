@@ -12,4 +12,5 @@ const kDrawerTextStyle = TextStyle(
   fontWeight: FontWeight.w500,
 );
 
-const kSize = SizedBox(height: 10.0,);
+const kSizedBox = SizedBox(height: 20.0,);
+const skSizedBox = SizedBox(height: 10.0,);

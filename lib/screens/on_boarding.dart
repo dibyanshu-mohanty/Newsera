@@ -9,7 +9,7 @@ class OnBoardScreen extends StatelessWidget {
   }
 
   void goToHome(context) =>
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => NewsApp()));
 
   DotsDecorator getDotDecoration () {
@@ -29,8 +29,8 @@ class OnBoardScreen extends StatelessWidget {
       globalBackgroundColor: Colors.white,
       pages: [
         PageViewModel(
-            title: 'Welcome to IN_News!',
-            body: 'Get News on your Fingertips',
+            title: 'Welcome to Newsera!',
+            body: 'Get Great News on your Fingertips',
             image: _buildImage("Onboarding1.png"),
             decoration: PageDecoration(
               titleTextStyle: TextStyle(
@@ -41,7 +41,7 @@ class OnBoardScreen extends StatelessWidget {
         ),
         PageViewModel(
             title: 'Get Appropriate and Authentic news',
-            body: 'National, Business, Sports, Tech. We got them all ',
+            body: 'National, Business, Sports, Tech, Startups. We got them all ',
             image: _buildImage("Onboarding2.png"),
             decoration: PageDecoration(
               titleTextStyle: TextStyle(
@@ -55,7 +55,7 @@ class OnBoardScreen extends StatelessWidget {
         ),
         PageViewModel(
             title: 'Get news of your choice in just one click !',
-            body: 'Thank you for choosing IN_News. Contact us, in case of any issues.',
+            body: 'Thank you for choosing Newsera. We hop you enjoy your experience here !',
             image: _buildImage("Onboarding3.png"),
             decoration: PageDecoration(
               titleTextStyle: TextStyle(
